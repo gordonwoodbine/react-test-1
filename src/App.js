@@ -1,60 +1,45 @@
-import React, {Component} from 'react';
+import { useState } from 'react';
+import { Stack, Typography } from '@mui/material';
 import MyAlert from './MyAlert';
-import {Stack, Typography} from '@mui/material';
 import Trigger from './Trigger';
 
-class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            warning: false,
-            info   : false,
-        }
-        this.onChange = this.onChange.bind(this);
-    }
+const alertTypes = {
+  info: {
+    type: 'info',
+    title: 'Information',
+    content: 'This is an information message',
+  },
+  warning: {
+    type: 'warning',
+    title: 'Warning',
+    content: 'This is a warning message',
+  },
+  error: {
+    type: 'error',
+    title: 'Error',
+    content: 'This is an error message',
+  },
+};
 
-    componentDidMount() {
-        var info = true;
-        this.setState({warning: info})
-    }
+const App = () => {
+  const [activeAlert, setActiveAlert] = useState('info');
 
-    onChange(value) {
-        console.log(value);
-        if (value === 'warning') {
-            this.setState({warning: true})
-        }
-        if (value === 'info') {
-            this.setState({info: true})
-        }
-    }
+  const handleChange = (e) => {
+    setActiveAlert(e.target.value);
+  };
 
-    render() {
-        const {info} = this.state;
-
-        return (
-            <>
-                <Stack sx={{width: '600px', padding: '20px'}} spacing={2}>
-                    <Typography variant={'h4'}>Alerts</Typography>
-                    {
-                        this.state.warning ? <MyAlert
-                            type={'warning'}
-                            title={'Warning'}
-                            content={'This is a warning message'}
-                        /> :null
-                    }
-                    {
-                        info ? <MyAlert
-                            type={'info'}
-                            title={'Information'}
-                            content={'This is a information message'}
-                        /> :null
-                    }
-                    <Trigger onChange={this.onChange}/>
-                </Stack>
-
-            </>
-        );
-    }
+  return (
+    <Stack sx={{ width: '600px', padding: '20px' }} spacing={2}>
+      <Typography variant={'h4'}>Alerts</Typography>
+      <MyAlert alert={alertTypes[activeAlert]} />
+      <Trigger
+        activeAlert={activeAlert}
+        handleChange={handleChange}
+        // send as array so we can map over it
+        alertTypes={Object.values(alertTypes)}
+      />
+    </Stack>
+  );
 };
 
 export default App;
