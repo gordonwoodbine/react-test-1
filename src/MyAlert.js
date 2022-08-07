@@ -1,15 +1,17 @@
-import * as React from 'react';
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
+import { Alert, AlertTitle } from '@mui/material/';
+import PropTypes from 'prop-types';
 
-const MyAlert = ({type, title, content}) => {
+const MyAlert = ({ alert }) => {
+  return (
+    <Alert severity={alert.type}>
+      <AlertTitle>{alert.title}</AlertTitle>
+      {alert.content}
+    </Alert>
+  );
+};
 
-    return (
-        <Alert severity={type}>
-            <AlertTitle>title</AlertTitle>
-            content
-        </Alert>
-    );
+MyAlert.propTypes = {
+  alert: PropTypes.object.isRequired,
 };
 
 export default MyAlert;
